@@ -1,0 +1,52 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls admin_static admin_modify %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script>(function($){jQuery = $.noConflict(true);})(django.jQuery);</script>
+{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/magnific-popup.css' %}" />
+    <style>
+        .mfp-content {
+            height:90%;
+            width: 90%;
+ 		}
+ 		.custom-row {
+ 			text-align: left;
+ 		}
+ 		#uploadData {
+ 			margin: 2px 0;
+ 		}
+    </style>
+{% endblock %}
+
+
+{% block admin_change_form_document_ready %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'admin/scripts/jquery.magnific-popup.js' %}"></script>
+    <script type="text/javascript">
+        (function($) {
+            $(document).ready(function() {
+            	$('.submit-row').before('<fieldset class="module aligned ">' + 
+            			'<h2>Prepare forecast</h2>' + 
+            			'<div class="description">Prepare forecast by running the appropriate models. May take some time.</div>' +
+            			'<div class="submit-row custom-row">' +
+                		'<input id="train" value="Training view" type="submit">' +
+                		'</div>' +
+            			'</fieldset>');
+                
+            	setTimeout(function () {
+                	$('#train').attr('href', '/timeSeries/trainForecast/' +  $('#id_name').val() + '/');
+            	},100);
+            	
+                $('#train').magnificPopup({
+                    fixedBgPos: true,
+                    type: 'iframe',
+                    });
+            });
+        })(django.jQuery);
+    </script>
+{% endblock %}
